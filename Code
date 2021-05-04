@@ -1,0 +1,121 @@
+from __future__ import unicode_literals
+import tkinter
+from pytube import *
+from tkinter import *
+from tkinter import messagebox
+from tkinter import filedialog
+import moviepy.editor
+
+video_converter = Tk()
+video_converter.geometry("350x300")
+video_converter.title("Welcome to Converter")
+
+
+# Functions for Video Converter
+# Download Function
+def download():
+    yt = YouTube(yt_entry.get())
+    video_c = yt.streams.first()
+    video_c.download('X:/mp3')
+
+
+# Function for selecting mp4 file
+def select_mp4_file():
+    global video
+    video = filedialog.askopenfilename(filetypes=(("MP4 Files", "*.mp4"),
+                                                  ("All Files", "*.*")))
+    messagebox.showinfo("Info", "You successfully select MP4 File")
+
+
+# Function for selecting destination for mp3 conversion
+def select_destination_for_mp3():
+    global audio
+    audio = filedialog.asksaveasfilename()
+    messagebox.showinfo("Status",
+                        "You select location for mp3 file")
+
+
+# Function for conversion
+def convert_video_to_mp3():
+    p = moviepy.editor.VideoFileClip(video, )
+    b = p.audio
+    b.write_audiofile(audio,
+                      codec="libmp3lame")
+    messagebox.showinfo("Status",
+                        "File conversion is completed")
+
+
+# Labels and Buttons
+# Label for copying video destination link
+copy_label = Label(video_converter,
+                   text='Copy Link                          ',
+                   bg="cyan",
+                   fg="Black", font=('arial', 8))
+copy_label.grid(row=0, column=0, padx=20, pady=10, sticky=W)
+
+# Entry field for copying link
+yt_entry: Entry = tkinter.Entry(video_converter,
+                                text='Copy Link                             ',
+                                bg="cyan",
+                                fg="Black", bd=3)
+yt_entry.grid(row=0, column=1, padx=10, pady=10, sticky=W)
+
+# Button for video download
+download_video = Button(video_converter,
+                        text='Download mp4 Video  ',
+                        bg="lime green",
+                        fg="Black",
+                        command=download)
+download_video.grid(row=1, column=0, padx=20, pady=10, sticky=W)
+
+# Button for selecting destination where is mp4 file downloaded/saved
+destination_button = Button(video_converter,
+                            text="Select mp4 destination",
+                            bg="light sea green",
+                            fg="Black",
+                            command=select_mp4_file)
+destination_button.grid(row=2, column=0, padx=20, pady=10, sticky=W)
+
+# Label for selecting mp4 file
+destination_label = Label(video_converter,
+                          text="Select MP4 File ...                   ",
+                          bg="light sea green",
+                          fg="Black", font=('arial', 8))
+destination_label.grid(row=2, column=1, padx=10, pady=10, sticky=W)
+
+# Button for selecting destination for saving audio file
+select_button = Button(video_converter,
+                       text="Select Destination         ",
+                       bg="salmon",
+                       fg="Black",
+                       command=select_destination_for_mp3)
+select_button.grid(row=3, column=0, padx=20, pady=10, sticky=W)
+
+# Label for selecting mp3 file destination
+audio_label_destination = Label(video_converter,
+                                text="Select destination for MP3 file",
+                                bg="salmon",
+                                fg="Black", font=('arial', 8))
+audio_label_destination.grid(row=3, column=1, padx=10, pady=5)
+
+# Label for saving mp3 file, on end its necessary to add .mp3
+type_name = Label(video_converter,
+                  text="Type new name of audio file  ",
+                  bg="salmon",
+                  fg="Black", font=('arial', 8))
+type_name.grid(row=4, column=1, padx=10, pady=5, sticky=W)
+
+label_save_mp3 = Label(video_converter,
+                       text="Save as '  .mp3'                      ",
+                       bg="salmon",
+                       fg="Black", font=('arial', 8))
+label_save_mp3.grid(row=5, column=1, padx=10, pady=5, sticky=W)
+
+conversion_button = Button(video_converter,
+                           text="Convert mp4 to mp3    ",
+                           bg="Orange",
+                           fg="Black",
+                           command=convert_video_to_mp3)
+conversion_button.grid(row=6, column=0, columnspan=2, padx=20, pady=10)
+
+video_converter.mainloop()
